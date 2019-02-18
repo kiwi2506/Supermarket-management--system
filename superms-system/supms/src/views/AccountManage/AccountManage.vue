@@ -181,10 +181,12 @@ export default {
     handleSelectionChange(val) {
       this.selectedAccount = val;
     },
+    
     //取消选中
     cancelSelect() {
       this.$refs.multipleTable.clearSelection();
     },
+
     //批量删除
     batcDelete() {
       //收集 选中的数据（选中的数据是一个数组需要遍历 map 产生一个新的数组）
@@ -219,7 +221,7 @@ export default {
                   message: reason
                 });
                 //删除成功并且刷新页面
-                this.getAccountlist();
+                this.getAccountlistByPage();
               } else {
                 //删除失败提示
                 this.$message.error(reason);
@@ -236,6 +238,7 @@ export default {
           });
         });
     },
+
     //编辑信息
     handleEdit(id) {
       //先把要修改的id 保存下俩
@@ -283,7 +286,7 @@ export default {
               message: reason
             });
             // 刷新列表（重新请求所有账号数据）
-            this.getAccountlist();
+            this.getAccountlistByPage();
           } else {
             //修改失败
             this.$message.error(reason);
@@ -320,7 +323,7 @@ export default {
                   message: reason
                 });
                 //删除成功并且刷新页面
-                this.getAccountlist();
+                this.getAccountlistByPage();
               } else {
                 //删除失败提示
                 this.$message.error(reason);

@@ -38,6 +38,9 @@
 </template>
 
 <script>
+ //引入 qs
+ import qs from "qs";
+
   export default {
     data() {
       // 包含特殊字符的函数
@@ -110,18 +113,31 @@
       submitForm(formName) {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            alert("submit!");
+            
             //如果登陆成功 搜集账号和密码 发给后端 验证 用户名和密码的正确性
             let params = {
               username: this.loginForm.username,
               password: this.loginForm.password
             };
 
-            //发送请求 把参数发给后端 验证是否正确（后面来补充）
+            //发送请求 把参数发给后端 验证是否正确（后面来补充） 
+
+            this.axios.post('http://127.0.0.1:3000/login/checklogin',qs.stringify(params))
+             .then(response =>{
+               //接收后端返回来的 查询结果
+
+
+
+               
+             })
+             .catch(err =>{ 
+               console.log(err)
+             })
+
 
             //登录成功直接跳转到后台首页
 
-            this.$router.push("/");
+            // this.$router.push("/");
           } else {
             console.log("error submit!!");
             return false;
