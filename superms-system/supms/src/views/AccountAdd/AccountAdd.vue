@@ -110,24 +110,24 @@ export default {
           };
           //  console.log(params)
           //发送axios 请求 把数据发送给后端
-          this.axios.post('http://127.0.0.1:3000/account/accountadd',qs.stringify(params))
+          this.req.post('/account/accountadd',params)
            .then(response=>{
             
             // 接收后端返回的错误码 和 提示信息
-              let { error_code, reason } = response.data;
+              let { error_code, reason } = response;
 
             //接收后端发回来的数据 判断
-            if(response.data.error_code === 0){
+            if(error_code === 0){
               //弹出成功的提示
               this.$message({
                 type:'success',
-                message:response.data.reason
+                message:reason
               });
              //添加成功并且跳转到 添加页面
               this.$router.push('/accountmanage')
             } else{
               //弹出失败的提示
-              this.$message.error(response.data.reason)
+              this.$message.error(reason)
             }
           }) 
           .catch(err => {

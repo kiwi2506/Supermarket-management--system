@@ -34,5 +34,34 @@
             </template>
             <el-menu-item index="/salesstatistics">销售统计</el-menu-item>
           </el-submenu>
+
+          <!-- 左侧导航5 -->
+          <el-submenu index="5">
+            <template slot="title">
+              <i class="el-icon-circle-plus"></i>进货管理
+            </template>
+            <el-menu-item index="/stockcontrol">库存管理</el-menu-item>
+            <el-menu-item index="/addrepertory">添加库存</el-menu-item>
+          </el-submenu>
+
+          <!-- 左侧导航6 -->
+          <el-submenu index="6">
+            <template slot="title">
+              <i class="el-icon-remove"></i>出货管理
+            </template>
+            <el-menu-item index="/selllist">销售列表</el-menu-item>
+            <el-menu-item index="/goodsdelivery">商品出库</el-menu-item>
+            <el-menu-item index="/goodsreturn">商品退货</el-menu-item>
+          </el-submenu>
+          
+          <!-- 左侧导航7 -->
+          <el-submenu index="7">
+            <template slot="title">
+              <i class="el-icon-star-on"></i>会员管理
+            </template>
+             <el-menu-item index="/vipaccountmanage">会员账号管理</el-menu-item>
+            <el-menu-item index="/vipaccountadd">会员添加账号</el-menu-item>
+          </el-submenu>
+
         </el-menu>
 </template>

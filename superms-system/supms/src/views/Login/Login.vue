@@ -21,11 +21,11 @@
         </el-form-item>
         <!-- 密码 -->
         <el-form-item label="密码" prop="password">
-          <el-input type="text" v-model="loginForm.password" autocomplete="off"></el-input>
+          <el-input type="password" v-model="loginForm.password" autocomplete="off"></el-input>
         </el-form-item>
         <!-- 确认密码 -->
         <el-form-item label="确认密码" prop="checkPwd">
-          <el-input type="text" v-model="loginForm.checkPwd" autocomplete="off"></el-input>
+          <el-input type="password" v-model="loginForm.checkPwd" autocomplete="off"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -122,22 +122,32 @@
 
             //发送请求 把参数发给后端 验证是否正确（后面来补充） 
 
-            this.axios.post('http://127.0.0.1:3000/login/checklogin',qs.stringify(params))
+            this.req.post('http://127.0.0.1:3000/login/checklogin',params)
              .then(response =>{
                //接收后端返回来的 查询结果
+               let {error_code,reason,token, username} = response;
+               //判断
+               if(error_code === 0) {
+                // 把token存在浏览器的本地存储中
+                window.localStorage.setItem('token', token);
+                // 把用户名存入本地存储
+                window.localStorage.setItem('username', username);
 
-
-
-               
+                 //成功弹出提示 
+                 this.$message({
+                   type:'success',
+                   message:reason
+                 })
+                 //跳到后端首页
+                  this.$router.push('/')
+               } else{
+                 //失败提示 
+                 this.$message.error(reason)
+               } 
              })
              .catch(err =>{ 
                console.log(err)
              })
-
-
-            //登录成功直接跳转到后台首页
-
-            // this.$router.push("/");
           } else {
             console.log("error submit!!");
             return false;
@@ -155,7 +165,10 @@
 .login {
   height: 100%;
   width: 100%;
-  background: #2d3a4b;
+  background-image: url('./background.jpg');
+  background-repeat:no-repeat;
+  background-size: cover;
+  // background: #2d3a4b;
   .login-wrapper {
     width: 600px;
     height: 400px;

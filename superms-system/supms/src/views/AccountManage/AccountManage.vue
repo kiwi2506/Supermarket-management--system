@@ -92,8 +92,8 @@
 <script>
 //引入moment 模块 时间格式化
 import moment from "moment";
-//引入qs
-import qs from "qs";
+// //引入qs
+// import qs from "qs";
 export default {
   //数据
   data() {
@@ -125,22 +125,21 @@ export default {
       //获取当前条数 和当前页码
       let pageSize = this.pageSize;
       let currentPage = this.currentPage;
+        
+        let params = {
+           pageSize,
+          currentPage
+        }
 
       //发送 axios 给后端
-      this.axios.get('http://127.0.0.1:3000/account/accountlistbypage',
-      {
-        params:{
-          pageSize,
-          currentPage
-      }
-      })
+      this.req.get('/account/accountlistbypage', params)
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         //接收后端发回来的数据  
-        let {total,data} = response.data;
+        let {total,data} = response;
         //把收到的数据赋值给 对应的变量
-        this.total = total;
-        this.accountTableData =data;
+        this.total = total; //总条数
+        this.accountTableData =data; 
       })
       .catch(err =>{
         console.log(err)
@@ -205,15 +204,10 @@ export default {
       })
         .then(response => {
           //发送axios 把需要删除的数据 发给后端
-          this.axios
-            .get(`http://127.0.0.1:3000/account/batchdelete`, {
-              params: {
-                selectedId
-              }
-            })
+          this.req.get(`/account/batchdelete`, {selectedId})
             .then(response => {
               //接收后端发来的 错误 提示信息
-              let { error_code, reason } = response.data;
+              let { error_code, reason } = response;
               if (error_code === 0) {
                 //删除数据成功  弹出提示
                 this.$message({
@@ -241,16 +235,16 @@ export default {
 
     //编辑信息
     handleEdit(id) {
-      //先把要修改的id 保存下俩
+      //先把要修改的id 保存下来
       this.editId = id;
       // 显示模态框
       this.flag = true;
       //发送axios id给后端
-      this.axios
-        .get(`http://127.0.0.1:3000/account/accountedit?id=${id}`)
+      this.req
+        .get(`/account/accountedit`,{id})
         .then(response => {
           //返回的数据是 数组 获取数组的 索引为0 的那个对象   （实际上也只有一个对象 因为没有批量修改）
-          let result = response.data[0];
+          let result = response[0];
           //回填数据  双向绑定的  方式来回填数据
           this.editForm.username = result.username;
           this.editForm.usergroup = result.usergroup;
@@ -270,14 +264,10 @@ export default {
       };
 
       //发送axios 请求给后端
-      this.axios
-        .post(
-          "http://127.0.0.1:3000/account/saveeditaccount",
-          qs.stringify(params)
-        )
+      this.req.post("/account/saveeditaccount", params)
         .then(response => {
           //接收错误信息提示 数据
-          let { error_code, reason } = response.data;
+          let { error_code, reason } = response;
           //前端接收 后端更新后的数据
           if (error_code === 0) {
             // 修改成功 弹出成功的提示
@@ -310,11 +300,10 @@ export default {
       })
         .then(response => {
           //发送axios 把id发给后端
-          this.axios
-            .get(`http://127.0.0.1:3000/account/accountdel?id=${id}`)
+          this.req.get(`/account/accountdel`,{id})
             .then(response => {
               // 接收后端返回的错误码 和 提示信息
-              let { error_code, reason } = response.data;
+              let { error_code, reason } = response;
               //前端接收后端删除账户 返回来的数据
               if (error_code === 0) {
                 //删除数据成功  弹出提示

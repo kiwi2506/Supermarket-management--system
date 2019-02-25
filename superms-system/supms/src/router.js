@@ -52,10 +52,50 @@ export default new Router({
           component:()=> import('./views/GoodsAdd/GoodsAdd.vue')
         },
         {
+          path:'/stockcontrol',
+          name:'stockcontrol',
+          component:()=> import('./views/StockControl/StockControl.vue')
+        },
+        {
+          path:'/addrepertory',
+          name:'addrepertory',
+          component:()=> import('./views/AddRepertory/AddRepertory.vue')
+        },
+        {
+          path:'/selllist',
+          name:'selllist',
+          component:()=> import('./views/SellList/SellList.vue')
+        },
+        {
+          path:'/goodsdelivery',
+          name:'goodsdelivery',
+          component:()=> import('./views/GoodsDelivery/GoodsDelivery.vue')
+        },
+        {
+          path:'/goodsreturn',
+          name:'goodsreturn',
+          component:()=> import('./views/GoodsReturn/GoodsReturn.vue')
+        },
+        {
+          path:'/vipaccountmanage',
+          name:'vipaccountmanage',
+          component:()=> import('./views/VipAccountmanage/VipAccountmanage.vue')
+        },
+        {
+          path:'/vipaccountadd',
+          name:'vipaccountadd',
+          component:()=> import('./views/VipAccountadd/VipAccountadd.vue')
+        },
+        {
+          path:'/personal',
+          name:'personal',
+          component:()=> import('./views/Personal/Personal.vue')
+        },
+        {
           path:'/salesstatistics',
-          name:'SalesStatistics',
+          name:'salesstatistics',
           component:()=> import('./views/SalesStatistics/SalesStatistics.vue')
-        }
+        },
       ]
     }
  

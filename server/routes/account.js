@@ -3,17 +3,35 @@
 const express = require('express');
 const router = express.Router();
 
+// 引入express-jwt 用于验证token
+const expressJwt = require('express-jwt');
+// 定义秘钥
+const secretKey = 'itsource';
 //引入连接数据库模块（myspl） 此接口由 connect.js暴露出来的
-
 const connection = require('./connect')
 
 //设置统一的响应头 解决跨域的问题 next  代表 继续执行下一个响应头
 router.all('*', (req, res, next) => {
   // 设置响应头 解决跨域(目前最主流的方式)
   res.header('Access-Control-Allow-Origin', '*');
+    // 允许的请求头
+    res.header("Access-Control-Allow-Headers", "authorization");
   next();
 })
 
+
+// 使用模块 express-jwt 验证token
+router.use(expressJwt ({
+  secret:  secretKey 
+}));
+//拦截器
+router.use( (err, req, res, next) => {
+  //当token验证失败时会抛出如下错误
+  if (err.name === 'UnauthorizedError') {   
+      //这个需要根据自己的业务逻辑来处理
+      res.status(401).send('无效的token 未授权...');
+  }
+});
 /* 
   添加账号的路由 /accountadd
 */
@@ -169,6 +187,50 @@ router.get('/accountlistbypage', (req, res) => {
     })
   })
 })
+
+//修改密码 /checkOldPwd
+router.get('/checkOldPwd', (req, res) => {
+  // 接收前端传过来的旧密码
+  let { oldPasswd, username } = req.query;
+
+  // 构造sql
+  const sqlStr = `select * from account where username='${username}' and password='${oldPasswd}'`;
+  // 执行sql
+  connection.query(sqlStr, (err, data) => {
+    if (err) throw err;
+    if (data.length) { // 如果查询出数据 证明正确
+      res.send({"error_code": 0, "reason":"旧密码正确!"});
+    } else { // 否则就是不正确
+      res.send({"error_code": 1, "reason":"旧密码错误!"})
+    }
+  })
+})
+
+//保存密码/savenewpwd
+
+router.post('/savenewpwd',(req,res) =>{
+  //保存前端传回来的新密码
+   let { username, oldPassword, newPassword}  = req.body;
+   
+  // 构造sql
+  const sqlStr = `update account set password='${newPassword}' where username='${username}' and password='${oldPassword}'`;
+  // 执行sql
+  connection.query(sqlStr, (err, data) => {
+    if (err) throw err;
+    // 判断
+    if (data.affectedRows > 0) {
+      // 成功
+      res.send({"error_code": 0, "reason":"密码修改成功!请重新登录!"})
+    } else {
+      // 失败
+      res.send({"error_code": 1, "reason":"密码修改失败!"})
+    }
+})
+   
+    
+
+})
+
 
 
 module.exports = router;

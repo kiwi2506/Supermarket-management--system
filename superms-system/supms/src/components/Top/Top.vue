@@ -12,13 +12,13 @@
                     <el-row>
                         <el-col :span="18">
                             欢迎您! 
-                            <el-dropdown>
+                            <el-dropdown @command="handleCommand">
                             <span class="username el-dropdown-link">
                                 {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
                             </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item>个人中心</el-dropdown-item>
-                                <el-dropdown-item>退出</el-dropdown-item>
+                                <el-dropdown-item command='personal'>个人中心</el-dropdown-item>
+                                <el-dropdown-item command='loginout'>退出</el-dropdown-item>
                             </el-dropdown-menu>
                             </el-dropdown>
                         </el-col>
@@ -37,9 +37,34 @@
 export default {
     data () {
         return {
-            username: "高级用户",
+            username: "",
             avatarUrl: 'http://127.0.0.1:8080/timg.jpg'
         }
+
+    },
+    methods:{
+        //退出登录 和  个人中心
+        handleCommand(command){
+              if(command === 'loginout'){
+                    //清空token 令牌 退出登录 跳转到首页
+                     window.localStorage.removeItem('token');
+                    
+                    //弹出 退出成功 登录框
+                    this.$message({
+                    type: 'success',
+                    message: '成功退出！'
+                })
+                    //跳转到首页
+                    this.$router.push('/login')
+              }else{
+                  //否者跳转到 个人中心
+                  this.$router.push('/personal')
+              }
+        }
+    },
+    created(){
+        //生命周期自动调用 显示当前用户名  
+        this.username = window.localStorage.getItem('username');
     }
 }
 </script>
