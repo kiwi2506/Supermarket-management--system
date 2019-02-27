@@ -17,6 +17,8 @@ const secretKey = 'itsource';
 router.all('*', (req, res, next) => {
   // 设置响应头 解决跨域(目前最主流的方式)
   res.header('Access-Control-Allow-Origin', '*');
+  res.header("Access-Control-Allow-Headers", "authorization");
+ 
   next();
 })
 // 使用模块 express-jwt 验证token

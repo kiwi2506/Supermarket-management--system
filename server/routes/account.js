@@ -191,10 +191,12 @@ router.get('/accountlistbypage', (req, res) => {
 //修改密码 /checkOldPwd
 router.get('/checkOldPwd', (req, res) => {
   // 接收前端传过来的旧密码
-  let { oldPasswd, username } = req.query;
-
+  let { oldPwd, username } = req.query;
+  
   // 构造sql
-  const sqlStr = `select * from account where username='${username}' and password='${oldPasswd}'`;
+  const sqlStr = `select * from account where username='${username}' and password='${oldPwd}'`;
+
+  console.log(sqlStr)
   // 执行sql
   connection.query(sqlStr, (err, data) => {
     if (err) throw err;
